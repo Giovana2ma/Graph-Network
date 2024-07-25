@@ -18,7 +18,6 @@ def get_playlist_id(channel_id):
     )
 
     channel_response = channel_request.execute()
-    print(channel_response)
     playlist_id = channel_response['items'][0]['contentDetails']['relatedPlaylists']['uploads']
     return playlist_id
 
@@ -44,7 +43,7 @@ def get_all_videos(channel_id):
             date, video_id = get_info(item)
             if date < datetime(2018, 1, 1):
                 return video_details
-            video_details.append({'Channel_ID': channel_id,'Video_ID': video_id,'Date': date.strftime('%Y-%m-%d')})
+            video_details.append({'channel_id': channel_id,'video_id': video_id,'date': date.strftime('%Y-%m-%d')})
 
         next_page_token = response.get('nextPageToken')
 
@@ -63,10 +62,10 @@ def collect_videos_from_channels(channel_ids):
     df = pd.DataFrame(all_videos)
     return df
 
-channel_ids = [
-    'UChIjQmxk48Fn8UYdJH2NaoQ'   
-]
+channel_ids_df = pd.read_csv('channel_stats.csv')
+channel_ids = channel_ids_df['channel_id'].tolist()
 
-video_id = collect_videos_from_channels(channel_ids)
+# Collect video data
+video_data = collect_videos_from_channels(channel_ids)
 
-video_id.to_csv('video_ids.csv', index=False)
+video_data.to_csv('videos_ids.csv', index=False)

@@ -29,4 +29,10 @@ def collect_video_details(video_ids):
             video_details.append(video_info)
     return pd.DataFrame(video_details)
     
+videos_ids_df = pd.read_csv('videos_ids.csv')
+videos_ids = videos_ids_df['video_id'].tolist()
 
+# Collect video data
+video_data = collect_video_details(videos_ids)
+
+video_data.to_csv('video_details.csv', index=False)

@@ -49,4 +49,12 @@ def get_comments(video_ids):
 
     return  pd.DataFrame(comments)
 
+videos_ids_df = pd.read_csv('videos_ids.csv')
+videos_ids = videos_ids_df['video_id'].tolist()
+
+# Collect video data
+video_data = get_comments(videos_ids)
+
+video_data.to_csv('video_comments.csv', index=False)
+
 
